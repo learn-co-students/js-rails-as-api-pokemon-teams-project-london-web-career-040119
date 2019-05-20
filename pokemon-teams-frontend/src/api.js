@@ -13,16 +13,20 @@ fetch(TRAINERS_URL).then(resp => resp.json())
 
 
 //create pokemon
-const createPokemon = (pokemon,trainer_id) =>
+const createPokemon = trainer_id =>
 fetch(POKEMONS_URL, {
 	method: 'POST',
 	headers: { 'Content-Type': 'application/json' },
 	body: JSON.stringify({
-        species: pokemon.species,
-        nickname: pokemon.nickname,
         trainer_id: trainer_id
 	})
-}).then(resp => resp.json())
+}).then(resp => {
+	if (resp.ok) {
+		return resp.json()
+	} else {
+		return Promise.reject(resp.json())
+	}
+})
 
 
 //delete a pokemon

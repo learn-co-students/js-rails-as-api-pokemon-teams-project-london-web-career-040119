@@ -23,11 +23,15 @@ class PokemonsController < ApplicationController
     # end
 
     def create
-        pokemon = Pokemon.new(pokemon_params)
-        if Pokemon.save
+
+        species = Faker::Games::Pokemon.name
+        nickname = Faker::Name.first_name
+        trainer = Trainer.find(params[:trainer_id])
+        if trainer.pokemons.length < 6
+            pokemon = Pokemon.create(nickname: nickname, species: species, trainer_id: params[:trainer_id])
             render json: pokemon
         else
-            render json: {message: "Pokemon cannot be created"}
+            render json: {message: "Pokemon cannot be created"}, status: 400
         end
     end
 
