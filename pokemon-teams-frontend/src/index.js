@@ -2,6 +2,12 @@
 const main = document.querySelector("main")
 
 
+
+
+// On initliaztion we are rendering our trainers 
+const init = () => 
+fetchTrainers().then( x => addTrainers(x))
+
 {/* <main>
       <div class="card" data-id="1"><p>Prince</p>
         <button data-trainer-id="1">Add Pokemon</button>
@@ -15,13 +21,14 @@ const main = document.querySelector("main")
 const addTrainers = (trainers) =>
 trainers.forEach(trainer => renderTrainer(trainer))
 
+// Add delete event to each pokemon
 
 
 const renderTrainer = trainer => {
 
     let trainerCard = document.createElement("div")
     let arrayOfPokemons = trainer.pokemons.map(pokemon => pokemon)
-    let pokemons = arrayOfPokemons.map(pokemon => `<li>${pokemon.species} (${pokemon.nickname})</li>`).join(` `)
+    let pokemons = arrayOfPokemons.map(pokemon => `<li>${pokemon.species} (${pokemon.nickname})<button onclick="deletePokemonEvent(event)" class="release" id="${pokemon.id}">Release</button></li>`).join(` `)
     // console.log(pokemons)
     trainerCard.className = "card"
     trainerCard.innerHTML =`
@@ -29,15 +36,24 @@ const renderTrainer = trainer => {
         <button data-trainer-id="${trainer.name}">Add Pokemon</button>
         ${pokemons}
     `
-main.append(trainerCard)
+     main.append(trainerCard)
+    
 }
 
 
 
+document.addEventListener("DOMContentLoaded", ()=>
+    init()
+)
+  
 
 
-// On initliaztion we are rendering our trainers 
-// const init = () => 
-// fetchTrainers().then( x => addTrainers(x))
+deletePokemonEvent = event => {
+  //* Client side 
+  let  button = event.target
+  let li = button.parentElement
+  li.remove();     
+  let pokemon_id = event.target.id
+  deletePokemon(pokemon_id)
+ }
 
-// init()
